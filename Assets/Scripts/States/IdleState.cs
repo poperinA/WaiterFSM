@@ -11,29 +11,33 @@ public class IdleState : WaiterStateFSM
 
     public override void Execute()
     {
-        Debug.Log("hello");
+ 
         // Check for triggers
+
         if (CheckForCustomerAtWaitingArea())
         {
-            Debug.Log("TA");
+            Debug.Log("Transitioning to Table Assignment State");
             // Transition to Table Assignment State
             fsm.ChangeState(new TableAssignmentState(fsm));
         }
         else if (CheckForOrderButtonPress())
         {
-            Debug.Log("OT");
+            Debug.Log("Transitioning to Order Taking State");
             // Transition to Order Taking State
             fsm.ChangeState(new OrderTakingState(fsm));
         }
         else if (CheckForRefillButtonPress())
         {
-            Debug.Log("R");
+            Debug.Log("Transitioning to Refill State");
             // Transition to Refill State
             fsm.ChangeState(new RefillState(fsm));
         }
         else
         {
-            Debug.Log("Dawg");
+            //will continue to stay idle
+            Debug.Log("No action needed; IDLE");
+
+            //loops back to the first if statement since it updates every frame
         }
     }
 
@@ -42,27 +46,26 @@ public class IdleState : WaiterStateFSM
         Debug.Log("Leaving Idle State");
     }
 
+    //checks
     private bool CheckForCustomerAtWaitingArea()
     {
-        // Simulate a random chance for a customer to be present
-        // Adjust the probability as needed
+        //simulate a random chance for a customer to be present
         float randomChance = Random.Range(0f, 1f);
         return randomChance <= 0.8f; // Customer is present
     }
 
     private bool CheckForOrderButtonPress()
     {
-        // Simulate a random chance for a customer to be present
-        // Adjust the probability as needed
+        //simulate a random chance for a customer to order
+
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f; // Customer is present
+        return randomChance <= 0.5f; // Customer wants to order
     }
 
     private bool CheckForRefillButtonPress()
     {
-        // Simulate a random chance for a customer to be present
-        // Adjust the probability as needed
+        //simulate a random chance for a customer to ask for refill
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.3f; // Customer is present
+        return randomChance <= 0.3f; // Customer requests refill
     }
 }
