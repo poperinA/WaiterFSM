@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class WaiterFSM : MonoBehaviour
@@ -44,6 +45,7 @@ public class WaiterFSM : MonoBehaviour
 
         // Initialize the current state to IdleState
         currentState = Idle;
+        
     }
 
     void Update()
