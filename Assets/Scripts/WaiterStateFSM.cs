@@ -1,17 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class WaiterStateFSM : MonoBehaviour
+public abstract class WaiterStateFSM
 {
-    protected WaiterStateFSM stateMachine;
+    protected WaiterFSM fsm; // Corrected the field type to WaiterFSM
 
-    public WaiterStateFSM(WaiterStateFSM stateMachine)
+    // Constructor to initialize the state with a reference to the FSM
+    public WaiterStateFSM(WaiterFSM fsm)
     {
-        this.stateMachine = stateMachine;
+        this.fsm = fsm;
     }
 
-    public virtual void Enter() { }
-    public virtual void Execute() { }
-    public virtual void Exit() { }
+    public abstract void Enter();
+    public abstract void Execute();
+    public abstract void Exit();
 }

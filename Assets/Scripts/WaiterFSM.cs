@@ -1,40 +1,49 @@
 using UnityEngine;
 
-public class WaiterFSM : WaiterStateFSM
+public class WaiterFSM : MonoBehaviour
 {
     protected WaiterStateFSM currentState;
 
-    public WaiterFSM() : base(null) { } // Add constructor for WaiterFSM
-
+    // Properties for each state
+    public WaiterStateFSM Idle { get; private set; }
+    public WaiterStateFSM TableAssignment { get; private set; }
+    public WaiterStateFSM CustomerService { get; private set; }
+    public WaiterStateFSM RefillService { get; private set; }
+    public WaiterStateFSM ClearTable { get; private set; }
+    public WaiterStateFSM Serving { get; private set; }
+    public WaiterStateFSM Performance { get; private set; }
+    public WaiterStateFSM OrderTaking { get; private set; }
+    public WaiterStateFSM EnquiryTaking { get; private set; }
+    public WaiterStateFSM RecommendationTaking { get; private set; }
+    public WaiterStateFSM Apology { get; private set; }
 
     void Start()
     {
-        //initialising states
+        // Initialize states
 
-        //idle state
-        IdleState idleState = new IdleState(this);
+        // Idle state
+        Idle = new IdleState(this);
 
-        //table assignment state
-        TableAssignmentState tableAssignmentState = new TableAssignmentState(this);
+        // Table assignment state
+        TableAssignment = new TableAssignmentState(this);
 
-        //customer servicing states
-        CustomerServiceState customerServiceState = new CustomerServiceState(this);
-        RefillState refillServiceState = new RefillState(this);
+        // Customer servicing states
+        CustomerService = new CustomerServiceState(this);
+        RefillService = new RefillState(this);
 
-        //customer table service states
-        ClearTableState clearTableState = new ClearTableState(this);
-        ServingState servingState = new ServingState(this);
-        PerformanceState performanceState = new PerformanceState(this);
+        // Customer table service states
+        ClearTable = new ClearTableState(this);
+        Serving = new ServingState(this);
+        Performance = new PerformanceState(this);
 
-        //order taking states
-        OrderTakingState orderTakingState = new OrderTakingState(this);
-        EnquiryState enquiryTakingState = new EnquiryState(this);
-        RecommendationState recommendationTakingState = new RecommendationState(this);
-        ApologyState apologyState = new ApologyState(this);
+        // Order taking states
+        OrderTaking = new OrderTakingState(this);
+        EnquiryTaking = new EnquiryState(this);
+        RecommendationTaking = new RecommendationState(this);
+        Apology = new ApologyState(this);
 
         // Initialize the current state to IdleState
-        TransitionToState(idleState);
-
+        currentState = Idle;
     }
 
     void Update()
@@ -43,7 +52,7 @@ public class WaiterFSM : WaiterStateFSM
             currentState.Execute();
     }
 
-    public void TransitionToState(WaiterStateFSM nextState)
+    public void ChangeState(WaiterStateFSM nextState)
     {
         if (currentState != null)
             currentState.Exit();
@@ -51,5 +60,4 @@ public class WaiterFSM : WaiterStateFSM
         currentState = nextState;
         currentState.Enter();
     }
-
 }
