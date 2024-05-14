@@ -61,9 +61,9 @@ public class RecommendationState : WaiterStateFSM
     private void DisplayMenu()
     {
         Debug.Log("Menu:\n" +
-                  $"1: {GenerateMainMeal()}\n" +
-                  $"2: {GenerateMainMeal()}\n" +
-                  $"3: {GenerateMainMeal()}");
+                  $"1: Grilled Salmon\n" +
+                  $"2: Macaroni and Cheese\n" +
+                  $"3: Chicken Alfredo");
     }
 
     private void DisplayOptions()
@@ -73,11 +73,4 @@ public class RecommendationState : WaiterStateFSM
                   "2: Reject");
     }
 
-    private string GenerateMainMeal()
-    {
-        // Generate random main meal names
-        string[] mainMeals = { "Chicken Alfredo", "Grilled Salmon", "Pasta Primavera", "Steak Frites", "Vegetable Stir-Fry" };
-        int index = Random.Range(0, mainMeals.Length);
-        return mainMeals[index];
-    }
 }

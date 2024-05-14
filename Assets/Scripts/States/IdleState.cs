@@ -23,16 +23,11 @@ public class IdleState : WaiterStateFSM
         }
         else if (CheckForServiceButtonPress())
         {
-            Debug.Log("IDLE: Service button pressed. Transitioning to Order Taking State");
-            // Transition to Order Taking State
-            fsm.ChangeState(new OrderTakingState(fsm));
+            Debug.Log("IDLE: Service button pressed. Transitioning to Customer Service State");
+            // Transition to Customer Service State
+            fsm.ChangeState(new CustomerServiceState(fsm));
         }
-        else if (CheckForRefillButtonPress())
-        {
-            Debug.Log("IDLE: Transitioning to Refill State");
-            // Transition to Refill State
-            fsm.ChangeState(new RefillState(fsm));
-        }
+
         else if (CheckForCustomerLeave())
         {
             Debug.Log("IDLE: Transitioning to Customer Leave State");

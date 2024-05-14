@@ -35,25 +35,25 @@ public class OrderTakingState : WaiterStateFSM
             // Check if any number key (1-5) is pressed
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                Meal = GenerateMainMeal();
+                Meal = "Chicken Alfredo";
                 waitingForInput = false;
                 mealChosen = true;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                Meal = GenerateMainMeal();
+                Meal = "Grilled Salmon";
                 waitingForInput = false;
                 mealChosen = true;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                Meal = GenerateKidsMeal();
+                Meal = "Macaroni and Cheese";
                 waitingForInput = false;
                 mealChosen = true;
             }
             else if (Input.GetKeyDown(KeyCode.Alpha4))
             {
-                Meal = GenerateDessert();
+                Meal = "Pizza";
                 waitingForInput = false;
                 mealChosen = true;
             }
@@ -81,35 +81,11 @@ public class OrderTakingState : WaiterStateFSM
     private void DisplayMenu()
     {
         Debug.Log("Menu:\n" +
-                  "1: Main Meal 1\n" +
-                  "2: Main Meal 2\n" +
-                  "3: Kids Meal 1\n" +
-                  "4: Kids Meal 2\n" +
+                  "1: Chicken Alfredo\n" +
+                  "2: Grilled Salmon\n" +
+                  "3: Macaroni and Cheese\n" +
+                  "4: Pizza\n" +
                   "5: Birthday Meal");
-    }
-
-    private string GenerateMainMeal()
-    {
-        // Generate random main meal names
-        string[] mainMeals = { "Chicken Alfredo", "Grilled Salmon", "Pasta Primavera", "Steak Frites", "Vegetable Stir-Fry" };
-        int index = Random.Range(0, mainMeals.Length);
-        return mainMeals[index];
-    }
-
-    private string GenerateKidsMeal()
-    {
-        // Generate random kids meal names
-        string[] kidsMeals = { "Chicken Nuggets", "Cheeseburger", "Macaroni and Cheese", "Pizza", "PB&J Sandwich" };
-        int index = Random.Range(0, kidsMeals.Length);
-        return kidsMeals[index];
-    }
-
-    private string GenerateDessert()
-    {
-        // Generate random dessert names
-        string[] desserts = { "Chocolate Cake", "Apple Pie", "Ice Cream Sundae", "Cheesecake", "Fruit Tart" };
-        int index = Random.Range(0, desserts.Length);
-        return desserts[index];
     }
 
     private bool CheckForEnquiry()
