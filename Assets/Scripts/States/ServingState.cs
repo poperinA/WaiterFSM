@@ -6,7 +6,7 @@ public class ServingState : WaiterStateFSM
     public override void Enter()
     {
         Debug.Log("SERVING: Entering Serving State");
-        Debug.Log("Takes food from kitchen and serves to table.");
+        Debug.Log("SERVING: Takes food from kitchen and serves to table.");
 
         if (CheckForBirthdayOrder())
         {

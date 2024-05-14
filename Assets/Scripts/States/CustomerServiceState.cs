@@ -62,6 +62,6 @@ public class CustomerServiceState : WaiterStateFSM
     {
         // Simulate a 50% chance for a customer to want a refill
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f;
+        return randomChance <= 0.8f;
     }
 }

@@ -30,13 +30,13 @@ public class IdleState : WaiterStateFSM
 
         else if (CheckForCustomerLeave())
         {
-            Debug.Log("IDLE: Customer leaves restaurant. Transitioning to Customer Leave State");
+            Debug.Log("IDLE: Customer leaves restaurant. Transitioning to Clear Table State");
             // Transition to Clear Table State
             fsm.ChangeState(new ClearTableState(fsm));
         }
         else if (CheckForFoodReady())
         {
-            Debug.Log("IDLE: Food ready. Transitioning to Food Ready State");
+            Debug.Log("IDLE: Food ready. Transitioning to Serving State");
             // Transition to Serving State
             fsm.ChangeState(new ServingState(fsm));
         }

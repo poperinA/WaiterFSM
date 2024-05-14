@@ -7,7 +7,7 @@ public class RefillState : WaiterStateFSM
     {
         Debug.Log("REFILL: Entering Refill State.");
         Debug.Log("REFILL: Takes cup to refill. Refill drink in the kitchen. Bring back refilled drink.");
-        Debug.Log("REFILL: Refill done. 'Anything else?' Transitioning to Customer State.");
+        Debug.Log("REFILL: Refill done. 'Anything else?' Transitioning to Customer Service State.");
         // Transition to Customer Service State
         fsm.ChangeState(new CustomerServiceState(fsm));
     }

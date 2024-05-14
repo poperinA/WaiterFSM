@@ -55,7 +55,7 @@ public class TableAssignmentState : WaiterStateFSM
             }
             
             // Serve more customers, if any more (probability)
-            if (Random.value <= 0.5f && CheckForCustomerAtWaitingArea())
+            if (CheckForCustomerAtWaitingArea())
             {
                 Debug.Log("TABLE_ASSIGNMENT: There are more customers waiting.");
                 fsm.ChangeState(new TableAssignmentState(fsm)); //transition back to Table Assignment State
