@@ -9,7 +9,7 @@ public class TableAssignmentState : WaiterStateFSM
 
     public override void Enter()
     {
-        Debug.Log("TABLE_ASSIGNMENT: Entering Table Assignment State");
+        Debug.Log("TABLE_ASSIGNMENT: Entering Table Assignment State.");
         Debug.Log("TABLE_ASSIGNMENT: Approaching customers and inquiring about the number of people in their party.");
         Debug.Log("INPUT A NUMBER FROM 1 - 4 (NUMBER OF CUSTOMERS)");
     }
@@ -70,7 +70,7 @@ public class TableAssignmentState : WaiterStateFSM
 
     public override void Exit()
     {
-        Debug.Log("Leaving Table Assignment State");
+        Debug.Log("TABLE_ASSIGNMENT: Leaving Table Assignment State.");
     }
 
     private bool CheckForCustomerAtWaitingArea()

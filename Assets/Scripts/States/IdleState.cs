@@ -6,7 +6,8 @@ public class IdleState : WaiterStateFSM
 
     public override void Enter()
     {
-        Debug.Log("IDLE: Standing at post");
+        Debug.Log("IDLE: Entering Idle State.");
+        Debug.Log("IDLE: Standing at post.");
     }
 
     public override void Execute()
@@ -20,9 +21,9 @@ public class IdleState : WaiterStateFSM
             // Transition to Table Assignment State
             fsm.ChangeState(new TableAssignmentState(fsm));
         }
-        else if (CheckForOrderButtonPress())
+        else if (CheckForServiceButtonPress())
         {
-            Debug.Log("IDLE: Transitioning to Order Taking State");
+            Debug.Log("IDLE: Service button pressed. Transitioning to Order Taking State");
             // Transition to Order Taking State
             fsm.ChangeState(new OrderTakingState(fsm));
         }
@@ -52,7 +53,7 @@ public class IdleState : WaiterStateFSM
 
     public override void Exit()
     {
-        //Debug.Log("Leaving Idle State");
+        Debug.Log("IDLE: Leaving Idle State.");
     }
 
     //checks
@@ -60,10 +61,10 @@ public class IdleState : WaiterStateFSM
     {
         //simulate a random chance for a customer to be present
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.8f; // Customer is present
+        return randomChance <= 0f; // Customer is present
     }
 
-    private bool CheckForOrderButtonPress()
+    private bool CheckForServiceButtonPress()
     {
         //simulate a random chance for a customer to order
         float randomChance = Random.Range(0f, 1f);
@@ -74,20 +75,20 @@ public class IdleState : WaiterStateFSM
     {
         //simulate a random chance for a customer to ask for refill
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.3f; // Customer requests refill
+        return randomChance <= 0f; // Customer requests refill
     }
 
     private bool CheckForCustomerLeave()
     {
         //simulate a random chance for a customer to leave
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.3f; // Customer leaves
+        return randomChance <= 0.0f; // Customer leaves
     }
 
     private bool CheckForFoodReady()
     {
         //simulate a random chance for a customer's food to be ready
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.3f; // Customer's food is ready
+        return randomChance <= 0.0f; // Customer's food is ready
     }
 }
