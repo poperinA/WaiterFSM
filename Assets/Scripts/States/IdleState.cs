@@ -56,34 +56,27 @@ public class IdleState : WaiterStateFSM
     {
         //simulate a random chance for a customer to be present
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0f; // Customer is present
+        return randomChance <= 0.5f;
     }
 
     private bool CheckForServiceButtonPress()
     {
         //simulate a random chance for a customer to order
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f; // Customer wants to order
-    }
-
-    private bool CheckForRefillButtonPress()
-    {
-        //simulate a random chance for a customer to ask for refill
-        float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0f; // Customer requests refill
+        return randomChance <= 0.5f;
     }
 
     private bool CheckForCustomerLeave()
     {
         //simulate a random chance for a customer to leave
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.0f; // Customer leaves
+        return randomChance <= 0.5f;
     }
 
     private bool CheckForFoodReady()
     {
         //simulate a random chance for a customer's food to be ready
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.0f; // Customer's food is ready
+        return randomChance <= 0.5f;
     }
 }
