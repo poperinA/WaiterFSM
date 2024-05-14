@@ -5,7 +5,10 @@ public class ClearTableState : WaiterStateFSM
 
     public override void Enter()
     {
-        Debug.Log("Entering Clear Table State");
+        Debug.Log("CLEAR_TABLE: Entering Clear Table State");
+        Debug.Log("Clear and cleans table. Table cleaned and ready. Transitioning to Idle State.");
+        // Transition to Idle State
+        fsm.ChangeState(new IdleState(fsm));
     }
 
     public override void Execute()
@@ -15,8 +18,7 @@ public class ClearTableState : WaiterStateFSM
 
     public override void Exit()
     {
-        
+        Debug.Log("CLEAR_TABLE: Leaving Clear Table State");
     }
 
-    //implementation
 }

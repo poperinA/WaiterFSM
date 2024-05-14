@@ -26,6 +26,12 @@ public class CustomerServiceState : WaiterStateFSM
             // Transition to Refill State
             fsm.ChangeState(new RefillState(fsm));
         }
+        else
+        {
+            Debug.Log("CUSTOMER_SERVICE: Customers pressed button by accident. Transitioning to Idle State.");
+            // Transition to Idle State
+            fsm.ChangeState(new IdleState(fsm));
+        }
     }
 
     public override void Execute()
@@ -35,27 +41,27 @@ public class CustomerServiceState : WaiterStateFSM
 
     public override void Exit()
     {
-        
+        Debug.Log("CUSTOMER_SERVICE: Leaving Customer Service State.");
     }
 
     private bool CheckForOrder()
     {
-        // Simulate a 50% chance for a customer to order
+        // Simulate a 60% chance for a customer to order
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f;
+        return randomChance <= 0.6f;
     }
 
     private bool CheckForComplaint()
     {
-        // Simulate a 30% chance for a customer to complain
+        // Simulate a 50% chance for a customer to complain
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.3f;
+        return randomChance <= 0.5f;
     }
 
     private bool CheckForRefill()
     {
-        // Simulate a 30% chance for a customer to want a refill
+        // Simulate a 50% chance for a customer to want a refill
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.3f;
+        return randomChance <= 0.5f;
     }
 }
