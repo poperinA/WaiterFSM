@@ -35,8 +35,8 @@ public class EnquiryState : WaiterStateFSM
 
     private bool CheckForRecommendation()
     {
-        // Simulate a 50% chance for a customer to enquire
+        // Simulate a 30% chance for a customer to enquire
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 1f; // Customer is asking
+        return randomChance <= 0.3f; // Customer is asking
     }
 }

@@ -7,7 +7,7 @@ public class PerformanceState : WaiterStateFSM
     {
         Debug.Log("PERFORMANCE: Entering Performance State.");
         Debug.Log("PERFORMANCE: Plays birthday song. Display birthday visuals on screen. Do a small dance.");
-        Debug.Log("PERFORMANCE: Performance over. Ttransitioning to Idle State.");
+        Debug.Log("PERFORMANCE: Performance over. Transitioning to Idle State.");
         // Transition to Idle State
         fsm.ChangeState(new IdleState(fsm));
     }

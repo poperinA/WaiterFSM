@@ -30,13 +30,13 @@ public class IdleState : WaiterStateFSM
 
         else if (CheckForCustomerLeave())
         {
-            Debug.Log("IDLE: Transitioning to Customer Leave State");
+            Debug.Log("IDLE: Customer leaves restaurant. Transitioning to Customer Leave State");
             // Transition to Clear Table State
             fsm.ChangeState(new ClearTableState(fsm));
         }
         else if (CheckForFoodReady())
         {
-            Debug.Log("IDLE: Transitioning to Food Ready State");
+            Debug.Log("IDLE: Food ready. Transitioning to Food Ready State");
             // Transition to Serving State
             fsm.ChangeState(new ServingState(fsm));
         }
@@ -56,27 +56,27 @@ public class IdleState : WaiterStateFSM
     {
         //simulate a random chance for a customer to be present
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f;
+        return randomChance <= 0.3f;
     }
 
     private bool CheckForServiceButtonPress()
     {
         //simulate a random chance for a customer to order
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f;
+        return randomChance <= 0.3f;
     }
 
     private bool CheckForCustomerLeave()
     {
         //simulate a random chance for a customer to leave
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f;
+        return randomChance <= 0.3f;
     }
 
     private bool CheckForFoodReady()
     {
         //simulate a random chance for a customer's food to be ready
         float randomChance = Random.Range(0f, 1f);
-        return randomChance <= 0.5f;
+        return randomChance <= 0.3f;
     }
 }

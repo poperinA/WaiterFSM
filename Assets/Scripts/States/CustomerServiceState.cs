@@ -6,7 +6,7 @@ public class CustomerServiceState : WaiterStateFSM
     public override void Enter()
     {
         Debug.Log("CUSTOMER_SERVICE: Entering Customer Service State.");
-        Debug.Log("'Hi! How can I help you?'");
+        Debug.Log("CUSTOMER_SERVICE:'Hi! How can I help you?'");
 
         if (CheckForOrder())
         {
