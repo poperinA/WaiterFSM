@@ -5,7 +5,11 @@ public class PerformanceState : WaiterStateFSM
 
     public override void Enter()
     {
-        Debug.Log("Entering Performance State");
+        Debug.Log("PERFORMANCE: Entering Performance State.");
+        Debug.Log("PERFORMANCE: Plays birthday song. Display birthday visuals on screen. Do a small dance.");
+        Debug.Log("PERFORMANCE: Performance over. Ttransitioning to Idle State.");
+        // Transition to Idle State
+        fsm.ChangeState(new IdleState(fsm));
     }
 
     public override void Execute()
@@ -15,8 +19,6 @@ public class PerformanceState : WaiterStateFSM
 
     public override void Exit()
     {
-        
+        Debug.Log("PERFORMANCE: Leaving Performance State.");
     }
-
-    //implementation
 }
