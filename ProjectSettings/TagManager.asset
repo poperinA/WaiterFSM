@@ -5,6 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - NoCollision
+  - WaitingArea
+  - Customer
+  - Table3
+  - Table4
+  - Table3Seat
+  - Table4Seat
+  - CustomerWaitingArea
+  - IdleArea
   layers:
   - Default
   - TransparentFX
