@@ -1,10 +1,22 @@
 tree("Root")
     fallback
+        tree("TableAssignment")
         tree("Idle")
+
+tree("TableAssignment")
+    sequence
+        DetectCustomerInWaitingArea
+        Display("Customer Detected! Moving to waiting area...")
+        MoveTo("WaitingArea")
+        Display("How many people are in your party?")
+        Query
+        Display("Please follow me to your table and have a seat!")
+        GuideToTable
+        WaitForCustomerToSeat
+
 
 tree("Idle")
 	sequence
-		Display("Moving to waiting area...")
-		MoveTo("WaitingArea")
+		Display("Moving to idle area...")
+		MoveTo("IdleArea")
 		Idle
-
