@@ -1,10 +1,10 @@
 tree("Root")
     fallback
-        tree("KitchenFire")
-        tree("HandleNewCustomer")
-        tree("TakeOrders")
-        tree("ServeFood")
-        tree("HandleComplaints")
-        tree("RefillDrinks")
-        tree("CleanTables")
+        tree("Idle")
+
+tree("Idle")
+	sequence
+		Display("Moving to waiting area...")
+		MoveTo("WaitingArea")
+		Idle
 

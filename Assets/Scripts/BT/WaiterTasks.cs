@@ -1,199 +1,66 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 using UnityEngine.AI;
 using Panda;
 
 public class WaiterTasks : MonoBehaviour
 {
-    // Variables to simulate conditions (in a real scenario, these would be set by game events)
-    private bool kitchenFireDetected = false;
-    private bool serviceButtonPressed = false;
-    private bool orderReady = false;
-    private bool complaintReceived = false;
-    private bool refillRequestReceived = false;
-    private bool tableEmpty = false;
+    public TextMeshProUGUI displayText;
 
-    // Method to simulate condition checks (you can replace these with real game logic)
-    [Task]
-    bool IsKitchenFireDetected() => kitchenFireDetected;
-    [Task]
-    bool IsServiceButtonPressed() => serviceButtonPressed;
-    [Task]
-    bool IsOrderReady() => orderReady;
-    [Task]
-    bool IsComplaintReceived() => complaintReceived;
-    [Task]
-    bool IsRefillRequestReceived() => refillRequestReceived;
-    [Task]
-    bool IsTableEmpty() => tableEmpty;
+    private NavMeshAgent navAgent;
 
-    // Implement task methods for each action
-    [Task]
-    void MoveToWaitingArea()
+    Transform target;
+
+    // Start is called before the first frame update
+    void Start()
     {
-        Debug.Log("Moving to waiting area...");
-        Task.current.Succeed();
+        navAgent = GetComponent<NavMeshAgent>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+
     }
 
     [Task]
-    void AskForTableRequirement()
+    bool Display(string text)
     {
-        Debug.Log("Asking for table requirement...");
-        Task.current.Succeed();
+        if (displayText != null)
+        {
+            displayText.text = text;
+            displayText.enabled = text != "";
+        }
+        return true;
     }
 
     [Task]
-    void AssignTable()
+    void MoveTo(string tag)
     {
-        Debug.Log("Assigning table...");
-        Task.current.Succeed();
+        if (target == null)
+        {
+            target = GameObject.FindGameObjectWithTag(tag).transform;
+        }
+
+        navAgent.stoppingDistance = 1f;
+
+
+        if (navAgent.destination != target.transform.position)
+        {
+            navAgent.SetDestination(target.position);
+        }
+
+        if (!navAgent.pathPending && navAgent.remainingDistance <= navAgent.stoppingDistance)
+        {
+            Task.current.Succeed();
+            target = null;
+        }
     }
 
     [Task]
-    void GuideToTable()
+    bool Idle()
     {
-        Debug.Log("Guiding to table...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ProvideMenu()
-    {
-        Debug.Log("Providing menu...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void MoveToTable()
-    {
-        Debug.Log("Moving to table...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void AskForOrder()
-    {
-        Debug.Log("Asking for order...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void TakeOrder()
-    {
-        Debug.Log("Taking order...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ConfirmOrder()
-    {
-        Debug.Log("Confirming order...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ProvideWaitTime()
-    {
-        Debug.Log("Providing wait time...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void MoveToKitchen()
-    {
-        Debug.Log("Moving to kitchen...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void PickUpFood()
-    {
-        Debug.Log("Picking up food...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ServeFood()
-    {
-        Debug.Log("Serving food...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void Apologize()
-    {
-        Debug.Log("Apologizing...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void RemakeFood()
-    {
-        Debug.Log("Remaking food...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void CustomerLeaves()
-    {
-        Debug.Log("Customer leaves...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void PickUpDrink()
-    {
-        Debug.Log("Picking up drink...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void RefillDrink()
-    {
-        Debug.Log("Refilling drink...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ReturnDrink()
-    {
-        Debug.Log("Returning drink...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ClearTable()
-    {
-        Debug.Log("Clearing table...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void CleanTable()
-    {
-        Debug.Log("Cleaning table...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ExtinguishFire()
-    {
-        Debug.Log("Extinguishing fire...");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void ConfirmFireExtinguished()
-    {
-        kitchenFireDetected = false;
-        Debug.Log("Fire extinguished.");
-        Task.current.Succeed();
-    }
-
-    [Task]
-    void Idle()
-    {
-        Debug.Log("Idling...");
-        Task.current.Succeed();
+        displayText.text = "Idling";
+        return true;
     }
 }
