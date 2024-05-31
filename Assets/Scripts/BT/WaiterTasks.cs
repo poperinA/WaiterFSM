@@ -6,24 +6,25 @@ using Panda;
 public class WaiterTasks : MonoBehaviour
 {
     public TextMeshProUGUI displayText;
+    public TextMeshProUGUI displayText1;
+    public GameObject player;
+    public MonoBehaviour playerMovementScript;
+    public static bool isPlayerSeated = false;
+    public static bool serviceButtonPressed = false;
 
     private NavMeshAgent navAgent;
     private Transform target;
     private GameObject customer;
     private int partySize = 0;
     private Transform seat;
+    private bool optionSelected = false;
+    private int selectedOption = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     [Task]
     bool Display(string text)
@@ -37,6 +38,17 @@ public class WaiterTasks : MonoBehaviour
     }
 
     [Task]
+    bool DisplayPlayer(string text)
+    {
+        if (displayText1 != null)
+        {
+            displayText1.text = text;
+            displayText1.enabled = text != "";
+        }
+        return true;
+    }
+
+    [Task]
     void MoveTo(string tag)
     {
         if (target == null)
@@ -45,7 +57,6 @@ public class WaiterTasks : MonoBehaviour
         }
 
         navAgent.stoppingDistance = 1f;
-
 
         if (navAgent.destination != target.transform.position)
         {
@@ -151,8 +162,73 @@ public class WaiterTasks : MonoBehaviour
 
         if (customer != null && seat != null && Vector3.Distance(customer.transform.position, seat.position) < 1f)
         {
+            // Disable player movement
+            if (playerMovementScript != null)
+            {
+                playerMovementScript.enabled = false;
+            }
+
+            // Lock the player in the middle of the seat
+            customer.transform.position = seat.position;
+
+            // Update the display text with options
+            DisplayPlayer("1 - Service button, 2 - Drink refill");
+
+            isPlayerSeated = true;
             task.Succeed();
         }
+    }
 
+    [Task]
+    void DetectServiceBtnPressed()
+    {
+        if (serviceButtonPressed && isPlayerSeated)
+        {
+            Task.current.Succeed();
+            serviceButtonPressed = false; // Reset for next interaction
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+    [Task]
+    void GiveOptions()
+    {
+        var task = Task.current;
+
+        DisplayPlayer("1 - Order, 2 - Complain");
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedOption = 1;
+            optionSelected = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedOption = 2;
+            optionSelected = true;
+        }
+
+        if (optionSelected)
+        {
+            if (selectedOption == 1)
+            {
+                // Trigger order-taking behavior
+                Debug.Log("Order selected");
+            }
+            else if (selectedOption == 2)
+            {
+                // Trigger complaint-handling behavior
+                Debug.Log("Complaint selected");
+            }
+
+            optionSelected = false; // Reset for next interaction
+            selectedOption = 0; // Reset selected option
+            task.Succeed();
+        }
     }
 }
+
+

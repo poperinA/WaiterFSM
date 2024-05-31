@@ -1,6 +1,7 @@
 tree("Root")
     fallback
         tree("TableAssignment")
+        tree("ServiceBtn")
         tree("Idle")
 
 tree("TableAssignment")
@@ -14,6 +15,13 @@ tree("TableAssignment")
         GuideToTable
         WaitForCustomerToSeat
 
+tree("ServiceBtn")
+	sequence
+        DetectServiceBtnPressed
+        Display("Service Button pressed! Moving to your table...")
+        MoveTo("Customer")
+        Display("How may I help you?")
+        GiveOptions
 
 tree("Idle")
 	sequence

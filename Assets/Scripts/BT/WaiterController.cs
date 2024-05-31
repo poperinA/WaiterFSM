@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class WaiterController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public WaiterTasks waiterTasks;
+    public GameObject player;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // Detect service button press (KeyCode.Alpha1 for demonstration)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && WaiterTasks.isPlayerSeated)
+        {
+            WaiterTasks.serviceButtonPressed = true;
+        }
+
     }
 }
