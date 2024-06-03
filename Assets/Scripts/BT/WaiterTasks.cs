@@ -52,6 +52,7 @@ public class WaiterTasks : MonoBehaviour
     private bool foodReady = false;           // Flag for food readiness
     private bool takeOrder = false;
     private bool customerComplaint = false;
+    private bool foodOrdered = false;
 
 
 
@@ -243,16 +244,22 @@ public class WaiterTasks : MonoBehaviour
     void GiveOptions()
     {
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(KeyCode.Alpha1) && !foodOrdered)
         {
             takeOrder = true;
             customerComplaint = false;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha1) && foodOrdered)
+        {
+            DisplayPlayer("S - Service, R - Drink refill, L - Leave");
+            Task.current.Fail();
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             customerComplaint = true;
             takeOrder = false;
         }
+
 
         if (takeOrder || customerComplaint)
         {
@@ -301,6 +308,7 @@ public class WaiterTasks : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
         {
+            foodOrdered = true;
             DisplayPlayer("1 - Order, 2 - Complain");
             takeOrder = false;
             serviceButtonPressed = false;
@@ -451,6 +459,7 @@ public class WaiterTasks : MonoBehaviour
             Dish.transform.rotation = dishPos.rotation;
             foodReady = false;
             foodServed = true;
+            foodOrdered = false;
             StartCoroutine(FoodEatingCountdown());
             Task.current.Succeed();
         }
@@ -532,7 +541,6 @@ public class WaiterTasks : MonoBehaviour
     void CleanTable()
     {
         
-        // Find the GameObject with the "EmptyDish" tag
         GameObject emptyDish = GameObject.FindGameObjectWithTag("EmptyDish");
         GameObject Dish = GameObject.FindGameObjectWithTag("Dish");
 
