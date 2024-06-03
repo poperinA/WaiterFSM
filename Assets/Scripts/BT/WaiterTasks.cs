@@ -19,6 +19,7 @@ public class WaiterTasks : MonoBehaviour
     public static bool leaveRestaurant = false;
     public static bool foodServed = false;
     public static bool dishCleared = false;
+    public static bool inService = false;
     public float foodPreparationTime = 10f;
     public float foodEatingTime = 5f;
     public ParticleSystem cookingParticles;
@@ -27,7 +28,7 @@ public class WaiterTasks : MonoBehaviour
     public GameObject emptyDishPrefab;
     public Transform botHandTransform;
 
-    private NavMeshAgent navAgent;
+    public NavMeshAgent navAgent;
     private Transform target;
     private GameObject customer;
     private GameObject Dish;
@@ -215,6 +216,7 @@ public class WaiterTasks : MonoBehaviour
         {
             Task.current.Succeed();
             serviceButtonPressed = false;
+            inService = true;
         }
         else
         {
@@ -364,6 +366,23 @@ public class WaiterTasks : MonoBehaviour
             {
                 Debug.LogError("PlayerController component not found on player GameObject.");
             }
+            
+            if(Dish != null)
+            {
+                // Find the GameObject with the "EmptyDish" tag
+                GameObject Dish = GameObject.FindGameObjectWithTag("Dish");
+
+                // Set the empty dish's parent to the bot's hand transform
+                Dish.transform.SetParent(botHandTransform);
+
+                // Set the local position and rotation of the empty dish
+                Dish.transform.localPosition = botHandTransform.transform.localPosition;
+
+                // Move the waiter to the sink
+                MoveTo("Sink");
+
+                StartCoroutine(DestroyDishAfterReachSink());
+            }
 
             isPlayerSeated = false;
             serviceButtonPressed = false;
@@ -373,6 +392,14 @@ public class WaiterTasks : MonoBehaviour
             DisplayPlayer("1 - Service button, 2 - Drink refill");
             Task.current.Succeed();
         }
+    }
+
+    IEnumerator DestroyDishAfterReachSink()
+    {
+        yield return new WaitForSeconds(5f);
+
+        // Destroy the dish
+        Destroy(Dish);
     }
 
 
@@ -476,8 +503,9 @@ public class WaiterTasks : MonoBehaviour
     [Task]
     void DetectCustomerLeave()
     {
-        if (leaveRestaurant && foodServed)
+        if (leaveRestaurant && foodEaten)
         {
+            Debug.Log(foodEaten);
             // Get a reference to the PlayerController component
             PlayerController playerController = player.GetComponent<PlayerController>();
 

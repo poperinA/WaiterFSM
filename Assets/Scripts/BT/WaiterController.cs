@@ -11,7 +11,7 @@ public class WaiterController : MonoBehaviour
         {
             WaiterTasks.serviceButtonPressed = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && WaiterTasks.isPlayerSeated && WaiterTasks.foodServed && !WaiterTasks.serviceButtonPressed)
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && WaiterTasks.isPlayerSeated && WaiterTasks.foodServed && !WaiterTasks.inService)
         {
             WaiterTasks.refillButtonPressed = true;
         }
@@ -42,5 +42,6 @@ public class WaiterController : MonoBehaviour
             WaiterTasks.foodEaten = false;
             WaiterTasks.dishCleared = true;
         }
+
     }
 }
