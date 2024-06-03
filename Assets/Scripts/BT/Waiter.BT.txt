@@ -1,8 +1,11 @@
 tree("Root")
     fallback
         tree("TableAssignment")
-        tree("ServiceBtn")
+        tree("Service")
+        tree("OrderTaking")
+        tree("ComplaintHandling")
         tree("Idle")
+
 
 tree("TableAssignment")
     sequence
@@ -15,13 +18,40 @@ tree("TableAssignment")
         GuideToTable
         WaitForCustomerToSeat
 
-tree("ServiceBtn")
+
+tree("Service")
 	sequence
         DetectServiceBtnPressed
         Display("Service Button pressed! Moving to your table...")
         MoveTo("Customer")
         Display("How may I help you?")
+        DisplayPlayer("1 - Order, 2 - Complain")
         GiveOptions
+
+
+tree("OrderTaking")
+	sequence
+    DetectOrderTaking
+    Display("What would you like to have?")
+    DisplayPlayer("1 - Steak, 2 - Chicken, 3 - Lamb")
+    OrderInput
+    DisplayPlayer("")
+    Display("Great! We're preparing your order now.")
+    Wait(700)
+    DisplayPlayer("1 - Service button, 2 - Drink refill")
+
+tree("ComplaintHandling")
+	sequence
+    DetectComplaint
+    Display("What seems to be the problem?")
+    DisplayPlayer("1 - Complain")
+    Complain
+    DisplayPlayer("The service here is terrible!")
+    Wait(500)
+    Display("Im sorry to hear that, we will improve our services.")
+    DisplayPlayer("3 - Stay in the restaurant, 4 - Leave the restaurant")
+    StayOrLeave
+
 
 tree("Idle")
 	sequence

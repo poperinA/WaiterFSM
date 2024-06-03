@@ -2,23 +2,28 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.AI;
 using Panda;
+using System.Collections;
 
 public class WaiterTasks : MonoBehaviour
 {
     public TextMeshProUGUI displayText;
-    public TextMeshProUGUI displayText1;
+    public TextMeshProUGUI displayTextPlayer;
     public GameObject player;
     public MonoBehaviour playerMovementScript;
     public static bool isPlayerSeated = false;
     public static bool serviceButtonPressed = false;
+    public static bool takeOrder = false;
+    public static bool customerComplaint = false;
 
     private NavMeshAgent navAgent;
     private Transform target;
     private GameObject customer;
     private int partySize = 0;
     private Transform seat;
-    private bool optionSelected = false;
-    private int selectedOption = 0;
+    private bool Stay = false;
+    private bool Leave = false;
+    private bool Complaining = false;
+
 
     void Start()
     {
@@ -40,10 +45,10 @@ public class WaiterTasks : MonoBehaviour
     [Task]
     bool DisplayPlayer(string text)
     {
-        if (displayText1 != null)
+        if (displayTextPlayer != null)
         {
-            displayText1.text = text;
-            displayText1.enabled = text != "";
+            displayTextPlayer.text = text;
+            displayTextPlayer.enabled = text != "";
         }
         return true;
     }
@@ -185,7 +190,7 @@ public class WaiterTasks : MonoBehaviour
         if (serviceButtonPressed && isPlayerSeated)
         {
             Task.current.Succeed();
-            serviceButtonPressed = false; // Reset for next interaction
+            serviceButtonPressed = false;
         }
         else
         {
@@ -196,37 +201,120 @@ public class WaiterTasks : MonoBehaviour
     [Task]
     void GiveOptions()
     {
-        var task = Task.current;
-
-        DisplayPlayer("1 - Order, 2 - Complain");
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            selectedOption = 1;
-            optionSelected = true;
+            takeOrder = true;
+            customerComplaint = false;
         }
         else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            selectedOption = 2;
-            optionSelected = true;
+            customerComplaint = true;
+            takeOrder = false;
         }
 
-        if (optionSelected)
+        if (takeOrder || customerComplaint)
         {
-            if (selectedOption == 1)
+            Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    void DetectOrderTaking()
+    {
+        if (takeOrder)
+        {
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+    [Task]
+    void DetectComplaint()
+    {
+        if (customerComplaint)
+        {
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+    [Task]
+    void OrderInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            DisplayPlayer("1 - Order, 2 - Complain");
+            takeOrder = false;
+            serviceButtonPressed = false;
+            Task.current.Succeed();
+        }
+        else
+        {
+            //Debug.Log("Not a valid option");
+        }
+    }
+
+    [Task]
+    void Complain()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            customerComplaint = false;
+            serviceButtonPressed = false;
+            Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    void StayOrLeave()
+    {
+
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Stay = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            Leave = true;
+        }
+
+        if (Stay)
+        {
+            serviceButtonPressed = false;
+            Stay = false;
+            Leave = false;
+            DisplayPlayer("1 - Service button, 2 - Drink refill");
+            Task.current.Succeed();
+        }
+        else if (Leave)
+        {
+            // Get a reference to the PlayerController component
+            PlayerController playerController = player.GetComponent<PlayerController>();
+
+            // Check if the reference is not null
+            if (playerController != null)
             {
-                // Trigger order-taking behavior
-                Debug.Log("Order selected");
+                // Call the TeleportToSpawnPoint() method
+                playerController.TeleportToSpawnPoint();
             }
-            else if (selectedOption == 2)
+            else
             {
-                // Trigger complaint-handling behavior
-                Debug.Log("Complaint selected");
+                Debug.LogError("PlayerController component not found on player GameObject.");
             }
 
-            optionSelected = false; // Reset for next interaction
-            selectedOption = 0; // Reset selected option
-            task.Succeed();
+            isPlayerSeated = false;
+            serviceButtonPressed = false;
+            Stay = false;
+            Leave = false;
+            DisplayPlayer("1 - Service button, 2 - Drink refill");
+            Task.current.Succeed();
         }
     }
 }
