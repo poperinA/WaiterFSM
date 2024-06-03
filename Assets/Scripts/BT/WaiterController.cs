@@ -1,6 +1,4 @@
 using UnityEngine;
-using TMPro;
-using System.Collections; // Required for coroutines
 
 public class WaiterController : MonoBehaviour
 {

@@ -50,6 +50,7 @@ public class WaiterTasks : MonoBehaviour
         return true;
     }
 
+
     [Task]
     bool DisplayPlayer(string text)
     {
@@ -60,6 +61,7 @@ public class WaiterTasks : MonoBehaviour
         }
         return true;
     }
+
 
     [Task]
     void MoveTo(string tag)
@@ -83,12 +85,14 @@ public class WaiterTasks : MonoBehaviour
         }
     }
 
+
     [Task]
     bool Idle()
     {
         displayText.text = "Idling";
         return true;
     }
+
 
     [Task]
     void DetectCustomerInWaitingArea()
@@ -109,6 +113,7 @@ public class WaiterTasks : MonoBehaviour
             }
         }
     }
+
 
     [Task]
     void Query()
@@ -136,6 +141,7 @@ public class WaiterTasks : MonoBehaviour
             task.Succeed();
         }
     }
+
 
     [Task]
     void GuideToTable()
@@ -168,6 +174,7 @@ public class WaiterTasks : MonoBehaviour
         }
     }
 
+
     [Task]
     void WaitForCustomerToSeat()
     {
@@ -191,6 +198,7 @@ public class WaiterTasks : MonoBehaviour
             task.Succeed();
         }
     }
+
 
     [Task]
     void DetectServiceBtnPressed()
@@ -228,6 +236,7 @@ public class WaiterTasks : MonoBehaviour
 
     }
 
+
     [Task]
     void DetectOrderTaking()
     {
@@ -247,6 +256,7 @@ public class WaiterTasks : MonoBehaviour
         }
     }
 
+
     [Task]
     void DetectComplaint()
     {
@@ -259,6 +269,7 @@ public class WaiterTasks : MonoBehaviour
             Task.current.Fail();
         }
     }
+
 
     [Task]
     void OrderInput()
@@ -276,6 +287,25 @@ public class WaiterTasks : MonoBehaviour
             //Debug.Log("Not a valid option");
         }
     }
+    private IEnumerator FoodPreparationCountdown()
+    {
+        // Enable the particle system
+        if (cookingParticles != null)
+        {
+            cookingParticles.Play();
+        }
+
+        yield return new WaitForSeconds(foodPreparationTime);
+
+        // Stop the particle system
+        if (cookingParticles != null)
+        {
+            cookingParticles.Stop();
+        }
+
+        foodReady = true;
+    }
+
 
     [Task]
     void Complain()
@@ -287,6 +317,7 @@ public class WaiterTasks : MonoBehaviour
             Task.current.Succeed();
         }
     }
+
 
     [Task]
     void StayOrLeave()
@@ -334,6 +365,7 @@ public class WaiterTasks : MonoBehaviour
         }
     }
 
+
     [Task]
     void DetectFoodReady()
     {
@@ -370,6 +402,7 @@ public class WaiterTasks : MonoBehaviour
         }
     }
 
+
     [Task]
     void GiveFood()
     {
@@ -392,24 +425,7 @@ public class WaiterTasks : MonoBehaviour
     }
 
 
-    private IEnumerator FoodPreparationCountdown()
-    {
-        // Enable the particle system
-        if (cookingParticles != null)
-        {
-            cookingParticles.Play();
-        }
-
-        yield return new WaitForSeconds(foodPreparationTime);
-
-        // Stop the particle system
-        if (cookingParticles != null)
-        {
-            cookingParticles.Stop();
-        }
-
-        foodReady = true;
-    }
+    
 
 }
 
