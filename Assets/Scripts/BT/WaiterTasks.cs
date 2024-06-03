@@ -12,6 +12,7 @@ public class WaiterTasks : MonoBehaviour
     public MonoBehaviour playerMovementScript;
     public static bool isPlayerSeated = false;
     public static bool serviceButtonPressed = false;
+    public static bool refillButtonPressed = false;
     public static bool takeOrder = false;
     public static bool customerComplaint = false;
     public float foodPreparationTime = 10f;
@@ -424,9 +425,32 @@ public class WaiterTasks : MonoBehaviour
         }
     }
 
+    [Task]
+    void DetectRefillBtnPressed()
+    {
+        if (refillButtonPressed && isPlayerSeated)
+        {
+            Task.current.Succeed();
+            refillButtonPressed = false;
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
 
-    
-
+    [Task]
+    void CheckFoodServed()
+    {
+        if (Dish != null)
+        {
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
 }
 
 

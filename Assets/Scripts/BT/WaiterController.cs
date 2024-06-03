@@ -11,5 +11,9 @@ public class WaiterController : MonoBehaviour
         {
             WaiterTasks.serviceButtonPressed = true;
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha2) && WaiterTasks.isPlayerSeated)
+        {
+            WaiterTasks.refillButtonPressed = true;
+        }
     }
 }

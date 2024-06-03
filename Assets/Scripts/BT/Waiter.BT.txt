@@ -2,6 +2,7 @@ tree("Root")
     fallback
         tree("TableAssignment")
         tree("Service")
+        tree("Refill")
         tree("OrderTaking")
         tree("ComplaintHandling")
         tree("Serving")
@@ -38,7 +39,7 @@ tree("OrderTaking")
         OrderInput
         DisplayPlayer("")
         Display("Great! We're preparing your order now.")
-        Wait(400)
+        Wait(100)
         DisplayPlayer("1 - Service button, 2 - Drink refill")
 
 
@@ -49,7 +50,7 @@ tree("ComplaintHandling")
         DisplayPlayer("1 - Complain")
         Complain
         DisplayPlayer("The service here is terrible!")
-        Wait(500)
+        Wait(100)
         Display("Im sorry to hear that, we will improve our services.")
         DisplayPlayer("3 - Stay in the restaurant, 4 - Leave the restaurant")
         StayOrLeave
@@ -61,11 +62,24 @@ tree("Serving")
         Display("Your food is ready! Serving now...")
         MoveTo("Collection")
         Pickup
-        Wait(300)
+        Wait(100)
         MoveTo("Customer")
         GiveFood
-        Wait(200)
+        Wait(100)
 
+
+tree("Refill")
+	sequence
+        DetectRefillBtnPressed
+        CheckFoodServed
+        Display("Collecting your cup...")
+        MoveTo("Customer")
+        Display("Refilling drink...")
+        MoveTo("RefillStation")
+        Wait(100)
+        MoveTo("Customer")
+        Display("Enjoy!")
+        Wait(100)
 
 
 tree("Idle")
