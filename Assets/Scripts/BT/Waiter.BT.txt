@@ -1,5 +1,6 @@
 tree("Root")
     fallback
+        tree("KitchenFire")
         tree("TableAssignment")
         tree("Service")
         tree("OrderTaking")
@@ -63,10 +64,10 @@ tree("Serving")
         Display("Your food is ready! Serving now...")
         MoveTo("Collection")
         Pickup
-        Wait(100)
+        Wait(50)
         MoveTo("Customer")
         GiveFood
-        Wait(100)
+        Wait(50)
 
 
 tree("Refill")
@@ -77,7 +78,7 @@ tree("Refill")
         MoveTo("Customer")
         Display("Refilling drink...")
         MoveTo("RefillStation")
-        Wait(100)
+        Wait(50)
         MoveTo("Customer")
         Display("Enjoy!")
         Wait(100)
@@ -91,9 +92,19 @@ tree("Cleaning")
         CleanTable
         MoveTo("Sink")
         PutDishInSink
+        Wait(100)
+
+
+tree("KitchenFire")
+	sequence
+        Fire
+        IsFireDetected
+        Display("FIRE!!!")
+        MoveTo("Stove")
+        HandleKitchenFire
         Wait(200)
-
-
+        EndFire
+        
 
 tree("Idle")
 	sequence

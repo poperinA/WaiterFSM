@@ -41,6 +41,5 @@ public class WaiterController : MonoBehaviour
 
             WaiterTasks.foodEaten = false;
         }
-
     }
 }

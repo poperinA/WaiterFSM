@@ -21,6 +21,7 @@ public class WaiterTasks : MonoBehaviour
     public static bool serviceButtonPressed = false;
     public static bool refillButtonPressed = false;
     public static bool leaveRestaurant = false;
+    public static bool kitchenFire = false;
 
     //Timing Settings
     public float foodPreparationTime = 10f;   // Time to prepare food
@@ -28,6 +29,8 @@ public class WaiterTasks : MonoBehaviour
 
     //Particle Effects
     public ParticleSystem cookingParticles;   // Particle system for cooking effect
+    public ParticleSystem fireParticles;   // Particle system for fire effect
+    public ParticleSystem extinguisherParticles;   // Particle system for fire effect
 
     //Dish Settings
     public GameObject dishPrefab;             // Prefab for the dish
@@ -56,6 +59,8 @@ public class WaiterTasks : MonoBehaviour
     {
         navAgent = GetComponent<NavMeshAgent>();
         cookingParticles.Stop();
+        fireParticles.Stop();
+        extinguisherParticles.Stop();
     }
 
 
@@ -580,6 +585,51 @@ public class WaiterTasks : MonoBehaviour
             Destroy(emptyDish);
             leaveRestaurant = false;
             Task.current.Succeed();
+        }
+    }
+
+    [Task]
+    void IsFireDetected()
+    {
+        if (kitchenFire)
+        {
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+    [Task]
+    void HandleKitchenFire()
+    {
+        extinguisherParticles.Play();
+        fireParticles.Stop();
+        Task.current.Succeed();
+    }
+
+    [Task]
+    void EndFire()
+    {
+        extinguisherParticles.Stop();
+        kitchenFire = false;
+        Task.current.Succeed();
+    }
+
+    [Task]
+    void Fire()
+    {
+        if (UnityEngine.Random.Range(0f, 10f) > 9.99f)
+        {
+            kitchenFire = true;
+            fireParticles.Play();
+            Task.current.Succeed();
+        }
+        else
+        {
+            Debug.Log("Fail");
+            Task.current.Fail();
         }
     }
 }
