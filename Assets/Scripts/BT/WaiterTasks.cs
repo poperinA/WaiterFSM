@@ -14,20 +14,28 @@ public class WaiterTasks : MonoBehaviour
     public static bool serviceButtonPressed = false;
     public static bool takeOrder = false;
     public static bool customerComplaint = false;
+    public float foodPreparationTime = 10f;
+    public ParticleSystem cookingParticles;
+
+    public GameObject dishPrefab;
+    public Transform botHandTransform;
 
     private NavMeshAgent navAgent;
     private Transform target;
     private GameObject customer;
-    private int partySize = 0;
     private Transform seat;
+    private string currentTableTag;
+    private int partySize = 0;
     private bool Stay = false;
     private bool Leave = false;
-    private bool Complaining = false;
+    private bool foodReady = false;
+    private GameObject Dish;
 
 
     void Start()
     {
         navAgent = GetComponent<NavMeshAgent>();
+        cookingParticles.Stop();
     }
 
 
@@ -133,12 +141,12 @@ public class WaiterTasks : MonoBehaviour
     void GuideToTable()
     {
         var task = Task.current;
-        string tableTag = partySize <= 2 ? "Table4" : "Table3";
+        currentTableTag = partySize <= 2 ? "Table4" : "Table3";
         string seatTag = partySize <= 2 ? "Table4Seat" : "Table3Seat";
 
         if (task.isStarting)
         {
-            target = GameObject.FindGameObjectWithTag(tableTag)?.transform;
+            target = GameObject.FindGameObjectWithTag(currentTableTag)?.transform;
             seat = GameObject.FindGameObjectWithTag(seatTag)?.transform;
 
             if (target != null)
@@ -149,7 +157,7 @@ public class WaiterTasks : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Table with tag " + tableTag + " not found.");
+                Debug.LogError("Table with tag " + currentTableTag + " not found.");
                 task.Fail();
             }
         }
@@ -217,14 +225,21 @@ public class WaiterTasks : MonoBehaviour
         {
             Task.current.Succeed();
         }
+
     }
 
     [Task]
     void DetectOrderTaking()
     {
-        if (takeOrder)
+        if (takeOrder && Dish == null)
         {
             Task.current.Succeed();
+        }
+        else if (takeOrder && Dish != null)
+        {
+            DisplayPlayer("1 - Service button, 2 - Drink refill");
+            takeOrder = false;
+            Task.current.Fail();
         }
         else
         {
@@ -253,6 +268,7 @@ public class WaiterTasks : MonoBehaviour
             DisplayPlayer("1 - Order, 2 - Complain");
             takeOrder = false;
             serviceButtonPressed = false;
+            StartCoroutine(FoodPreparationCountdown());
             Task.current.Succeed();
         }
         else
@@ -317,6 +333,84 @@ public class WaiterTasks : MonoBehaviour
             Task.current.Succeed();
         }
     }
+
+    [Task]
+    void DetectFoodReady()
+    {
+        if (foodReady)
+        {
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+
+    [Task]
+    void Pickup()
+    {
+        if (Dish == null && foodReady)
+        {
+            // Instantiate the dish prefab
+            Dish = Instantiate(dishPrefab);
+
+            // Set the plate's parent to the bot's hand transform
+            Dish.transform.SetParent(botHandTransform);
+
+            // Set the local position and rotation of the plate
+            Dish.transform.localPosition = botHandTransform.transform.localPosition;
+
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+    [Task]
+    void GiveFood()
+    {
+        string dishPosTag = currentTableTag == "Table4" ? "DishPos4" : "DishPos3";
+        Transform dishPos = GameObject.FindGameObjectWithTag(dishPosTag)?.transform;
+
+        if (dishPos != null && Dish != null)
+        {
+            // Move the dish to the dish position
+            Dish.transform.SetParent(null); // Detach from the bot's hand
+            Dish.transform.position = dishPos.position;
+            Dish.transform.rotation = dishPos.rotation;
+            foodReady = false;
+            Task.current.Succeed();
+        }
+        else
+        {
+            Task.current.Fail();
+        }
+    }
+
+
+    private IEnumerator FoodPreparationCountdown()
+    {
+        // Enable the particle system
+        if (cookingParticles != null)
+        {
+            cookingParticles.Play();
+        }
+
+        yield return new WaitForSeconds(foodPreparationTime);
+
+        // Stop the particle system
+        if (cookingParticles != null)
+        {
+            cookingParticles.Stop();
+        }
+
+        foodReady = true;
+    }
+
 }
 
 

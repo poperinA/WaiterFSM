@@ -4,6 +4,7 @@ tree("Root")
         tree("Service")
         tree("OrderTaking")
         tree("ComplaintHandling")
+        tree("Serving")
         tree("Idle")
 
 
@@ -31,26 +32,40 @@ tree("Service")
 
 tree("OrderTaking")
 	sequence
-    DetectOrderTaking
-    Display("What would you like to have?")
-    DisplayPlayer("1 - Steak, 2 - Chicken, 3 - Lamb")
-    OrderInput
-    DisplayPlayer("")
-    Display("Great! We're preparing your order now.")
-    Wait(700)
-    DisplayPlayer("1 - Service button, 2 - Drink refill")
+        DetectOrderTaking
+        Display("What would you like to have?")
+        DisplayPlayer("1 - Steak, 2 - Chicken, 3 - Lamb")
+        OrderInput
+        DisplayPlayer("")
+        Display("Great! We're preparing your order now.")
+        Wait(400)
+        DisplayPlayer("1 - Service button, 2 - Drink refill")
+
 
 tree("ComplaintHandling")
 	sequence
-    DetectComplaint
-    Display("What seems to be the problem?")
-    DisplayPlayer("1 - Complain")
-    Complain
-    DisplayPlayer("The service here is terrible!")
-    Wait(500)
-    Display("Im sorry to hear that, we will improve our services.")
-    DisplayPlayer("3 - Stay in the restaurant, 4 - Leave the restaurant")
-    StayOrLeave
+        DetectComplaint
+        Display("What seems to be the problem?")
+        DisplayPlayer("1 - Complain")
+        Complain
+        DisplayPlayer("The service here is terrible!")
+        Wait(500)
+        Display("Im sorry to hear that, we will improve our services.")
+        DisplayPlayer("3 - Stay in the restaurant, 4 - Leave the restaurant")
+        StayOrLeave
+    
+
+tree("Serving")
+	sequence
+        DetectFoodReady
+        Display("Your food is ready! Serving now...")
+        MoveTo("Collection")
+        Pickup
+        Wait(300)
+        MoveTo("Customer")
+        GiveFood
+        Wait(200)
+
 
 
 tree("Idle")
