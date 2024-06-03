@@ -6,39 +6,49 @@ using System.Collections;
 
 public class WaiterTasks : MonoBehaviour
 {
-    public TextMeshProUGUI displayText;
-    public TextMeshProUGUI displayTextPlayer;
-    public GameObject player;
-    public MonoBehaviour playerMovementScript;
+    //UI Elements
+    public TextMeshProUGUI displayText;       // Text display for the waiter
+    public TextMeshProUGUI displayTextPlayer; // Text display for the player
+
+    //Player Settings
+    public GameObject player;                 // Reference to the player object
+    public MonoBehaviour playerMovementScript;// Script controlling player movement
+
+    //Static Flags
     public static bool isPlayerSeated = false;
+    public static bool foodEaten = false;
+    public static bool foodServed = false;
     public static bool serviceButtonPressed = false;
     public static bool refillButtonPressed = false;
-    public static bool takeOrder = false;
-    public static bool customerComplaint = false;
-    public static bool foodEaten = false;
     public static bool leaveRestaurant = false;
-    public static bool foodServed = false;
-    public static bool dishCleared = false;
-    public static bool inService = false;
-    public float foodPreparationTime = 10f;
-    public float foodEatingTime = 5f;
-    public ParticleSystem cookingParticles;
 
-    public GameObject dishPrefab;
-    public GameObject emptyDishPrefab;
-    public Transform botHandTransform;
+    //Timing Settings
+    public float foodPreparationTime = 10f;   // Time to prepare food
+    public float foodEatingTime = 5f;         // Time to eat food
 
-    public NavMeshAgent navAgent;
-    private Transform target;
-    private GameObject customer;
-    public GameObject Dish;
-    private Transform seat;
-    private string currentTableTag;
-    private int partySize = 0;
-    private bool Stay = false;
-    private bool Leave = false;
-    private bool foodReady = false;
-    private bool tableClean = true;
+    //Particle Effects
+    public ParticleSystem cookingParticles;   // Particle system for cooking effect
+
+    //Dish Settings
+    public GameObject dishPrefab;             // Prefab for the dish
+    public GameObject emptyDishPrefab;        // Prefab for the empty dish
+    public Transform botHandTransform;        // Transform for the bot's hand
+
+    //Navigation
+    public NavMeshAgent navAgent;             // NavMesh agent for movement
+    private Transform target;                 // Target transform for navigation
+
+    //Internal State
+    private GameObject customer;              // Reference to the customer object
+    public GameObject Dish;                   // Current dish object
+    private Transform seat;                   // Reference to the seat transform
+    private string currentTableTag;           // Tag for the current table
+    private int partySize = 0;                // Size of the party
+    private bool Stay = false;                // Flag for staying
+    private bool Leave = false;               // Flag for leaving
+    private bool foodReady = false;           // Flag for food readiness
+    private bool takeOrder = false;
+    private bool customerComplaint = false;
 
 
 
@@ -167,7 +177,7 @@ public class WaiterTasks : MonoBehaviour
 
             if (target != null)
             {
-                Debug.Log("Guiding to: " + target.name);
+                //Debug.Log("Guiding to: " + target.name);
                 navAgent.stoppingDistance = 1f;
                 navAgent.SetDestination(target.position);
             }
@@ -217,7 +227,6 @@ public class WaiterTasks : MonoBehaviour
         {
             Task.current.Succeed();
             serviceButtonPressed = false;
-            inService = true;
         }
         else
         {
@@ -257,7 +266,7 @@ public class WaiterTasks : MonoBehaviour
         }
         else if (takeOrder && Dish != null)
         {
-            DisplayPlayer("1 - Service button, 2 - Drink refill");
+            DisplayPlayer("S - Service, R - Drink refill, L - Leave");
             takeOrder = false;
             Task.current.Fail();
         }
@@ -290,9 +299,7 @@ public class WaiterTasks : MonoBehaviour
             DisplayPlayer("1 - Order, 2 - Complain");
             takeOrder = false;
             serviceButtonPressed = false;
-            dishCleared = false;
             StartCoroutine(FoodPreparationCountdown());
-            inService = false;
             Task.current.Succeed();
         }
         else
@@ -354,7 +361,6 @@ public class WaiterTasks : MonoBehaviour
 
             DisplayPlayer("S - Service, R - Drink refill, L - Leave");
 
-            inService = false;
             Task.current.Succeed();
         }
         else if (Leave)
@@ -377,7 +383,6 @@ public class WaiterTasks : MonoBehaviour
             isPlayerSeated = false;
             serviceButtonPressed = false;
             leaveRestaurant = true;
-            inService = false;
             foodEaten = false;
 
             Stay = false;
@@ -441,7 +446,6 @@ public class WaiterTasks : MonoBehaviour
             Dish.transform.rotation = dishPos.rotation;
             foodReady = false;
             foodServed = true;
-            tableClean = false;
             StartCoroutine(FoodEatingCountdown());
             Task.current.Succeed();
         }

@@ -26,7 +26,7 @@ public class WaiterController : MonoBehaviour
 
             var Dish = GameObject.FindGameObjectWithTag("Dish");
 
-            Debug.Log(Dish);
+            //Debug.Log(Dish);
 
             Vector3 dishPosition = Dish.transform.position;
 
@@ -40,7 +40,6 @@ public class WaiterController : MonoBehaviour
             emptyDish.tag = "EmptyDish";
 
             WaiterTasks.foodEaten = false;
-            WaiterTasks.dishCleared = true;
         }
 
     }
