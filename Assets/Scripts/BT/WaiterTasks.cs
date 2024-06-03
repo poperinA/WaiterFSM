@@ -636,7 +636,7 @@ public class WaiterTasks : MonoBehaviour
         }
         else
         {
-            Debug.Log("Fail");
+            //Debug.Log("Fail");
             Task.current.Fail();
         }
     }
