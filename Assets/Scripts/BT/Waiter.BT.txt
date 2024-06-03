@@ -41,7 +41,7 @@ tree("OrderTaking")
         DisplayPlayer("")
         Display("Great! We're preparing your order now.")
         Wait(100)
-        DisplayPlayer("1 - Service button, 2 - Drink refill, 3 - Leave Restaurant")
+        DisplayPlayer("S - Service, R - Drink refill, L - Leave")
 
 
 tree("ComplaintHandling")

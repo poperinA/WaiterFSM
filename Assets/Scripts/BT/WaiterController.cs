@@ -7,15 +7,15 @@ public class WaiterController : MonoBehaviour
     void Update()
     {
         // Detect service button press
-        if (Input.GetKeyDown(KeyCode.Alpha1) && WaiterTasks.isPlayerSeated)
+        if (Input.GetKeyDown(KeyCode.S) && WaiterTasks.isPlayerSeated)
         {
             WaiterTasks.serviceButtonPressed = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2) && WaiterTasks.isPlayerSeated && WaiterTasks.foodServed && !WaiterTasks.inService)
+        else if (Input.GetKeyDown(KeyCode.R) && WaiterTasks.isPlayerSeated && WaiterTasks.foodServed)
         {
             WaiterTasks.refillButtonPressed = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3) && WaiterTasks.isPlayerSeated && WaiterTasks.dishCleared)
+        else if (Input.GetKeyDown(KeyCode.L) && WaiterTasks.isPlayerSeated)
         {
             WaiterTasks.leaveRestaurant = true;
         }

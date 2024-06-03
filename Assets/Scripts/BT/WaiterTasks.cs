@@ -201,7 +201,7 @@ public class WaiterTasks : MonoBehaviour
             // Lock the player in the middle of the seat
             customer.transform.position = seat.position;
 
-            DisplayPlayer("1 - Service button, 2 - Drink refill, 3 - Leave Restaurant");
+            DisplayPlayer("S - Service, R - Drink refill, L - Leave");
 
 
             isPlayerSeated = true;
@@ -348,9 +348,12 @@ public class WaiterTasks : MonoBehaviour
         if (Stay)
         {
             serviceButtonPressed = false;
+
             Stay = false;
             Leave = false;
-            DisplayPlayer("1 - Service button, 2 - Drink refill");
+
+            DisplayPlayer("S - Service, R - Drink refill, L - Leave");
+
             inService = false;
             Task.current.Succeed();
         }
@@ -373,12 +376,14 @@ public class WaiterTasks : MonoBehaviour
 
             isPlayerSeated = false;
             serviceButtonPressed = false;
-            Stay = false;
-            Leave = false;
             leaveRestaurant = true;
             inService = false;
             foodEaten = false;
-            DisplayPlayer("1 - Service button, 2 - Drink refill");
+
+            Stay = false;
+            Leave = false;
+            DisplayPlayer("S - Service button, R - Drink refill, L - Leave Restaurant");
+
             Task.current.Succeed();
         }
     }
@@ -485,7 +490,7 @@ public class WaiterTasks : MonoBehaviour
     [Task]
     void DetectCustomerLeave()
     {
-        if (leaveRestaurant && !tableClean)
+        if (leaveRestaurant)
         {
             // Get a reference to the PlayerController component
             PlayerController playerController = player.GetComponent<PlayerController>();
@@ -496,6 +501,7 @@ public class WaiterTasks : MonoBehaviour
                 // Call the TeleportToSpawnPoint() method
                 playerController.TeleportToSpawnPoint();
                 Task.current.Succeed();
+                isPlayerSeated = false;
                 leaveRestaurant = false;
             }
             else
@@ -521,8 +527,6 @@ public class WaiterTasks : MonoBehaviour
         GameObject emptyDish = GameObject.FindGameObjectWithTag("EmptyDish");
         GameObject Dish = GameObject.FindGameObjectWithTag("Dish");
 
-        if(Dish != null)
-        {
             // Check if an empty dish is found
             if (Dish != null)
             {
@@ -551,7 +555,6 @@ public class WaiterTasks : MonoBehaviour
                 // If no dishes found, indicate that the task failed
                 Task.current.Fail();
             }
-        }
 
     }
 
@@ -566,14 +569,12 @@ public class WaiterTasks : MonoBehaviour
         {
             Destroy(Dish);
             leaveRestaurant = false;
-            tableClean = true;
             Task.current.Succeed();
         }
         else if(emptyDish != null)
         {
             Destroy(emptyDish);
             leaveRestaurant = false;
-            tableClean = true;
             Task.current.Succeed();
         }
     }
