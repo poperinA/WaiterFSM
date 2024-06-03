@@ -291,6 +291,7 @@ public class WaiterTasks : MonoBehaviour
             serviceButtonPressed = false;
             dishCleared = false;
             StartCoroutine(FoodPreparationCountdown());
+            inService = false;
             Task.current.Succeed();
         }
         else
@@ -349,6 +350,7 @@ public class WaiterTasks : MonoBehaviour
             Stay = false;
             Leave = false;
             DisplayPlayer("1 - Service button, 2 - Drink refill");
+            inService = false;
             Task.current.Succeed();
         }
         else if (Leave)
@@ -389,6 +391,7 @@ public class WaiterTasks : MonoBehaviour
             Stay = false;
             Leave = false;
             leaveRestaurant = true;
+            inService = false;
             DisplayPlayer("1 - Service button, 2 - Drink refill");
             Task.current.Succeed();
         }
