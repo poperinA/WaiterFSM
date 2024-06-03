@@ -31,13 +31,14 @@ public class WaiterTasks : MonoBehaviour
     public NavMeshAgent navAgent;
     private Transform target;
     private GameObject customer;
-    private GameObject Dish;
+    public GameObject Dish;
     private Transform seat;
     private string currentTableTag;
     private int partySize = 0;
     private bool Stay = false;
     private bool Leave = false;
     private bool foodReady = false;
+    private bool tableClean = true;
 
 
 
@@ -368,23 +369,7 @@ public class WaiterTasks : MonoBehaviour
             {
                 Debug.LogError("PlayerController component not found on player GameObject.");
             }
-            
-            if(Dish != null)
-            {
-                // Find the GameObject with the "EmptyDish" tag
-                GameObject Dish = GameObject.FindGameObjectWithTag("Dish");
 
-                // Set the empty dish's parent to the bot's hand transform
-                Dish.transform.SetParent(botHandTransform);
-
-                // Set the local position and rotation of the empty dish
-                Dish.transform.localPosition = botHandTransform.transform.localPosition;
-
-                // Move the waiter to the sink
-                MoveTo("Sink");
-
-                StartCoroutine(DestroyDishAfterReachSink());
-            }
 
             isPlayerSeated = false;
             serviceButtonPressed = false;
@@ -392,17 +377,10 @@ public class WaiterTasks : MonoBehaviour
             Leave = false;
             leaveRestaurant = true;
             inService = false;
+            foodEaten = false;
             DisplayPlayer("1 - Service button, 2 - Drink refill");
             Task.current.Succeed();
         }
-    }
-
-    IEnumerator DestroyDishAfterReachSink()
-    {
-        yield return new WaitForSeconds(5f);
-
-        // Destroy the dish
-        Destroy(Dish);
     }
 
 
@@ -458,6 +436,7 @@ public class WaiterTasks : MonoBehaviour
             Dish.transform.rotation = dishPos.rotation;
             foodReady = false;
             foodServed = true;
+            tableClean = false;
             StartCoroutine(FoodEatingCountdown());
             Task.current.Succeed();
         }
@@ -506,9 +485,8 @@ public class WaiterTasks : MonoBehaviour
     [Task]
     void DetectCustomerLeave()
     {
-        if (leaveRestaurant && foodEaten)
+        if (leaveRestaurant && !tableClean)
         {
-            Debug.Log(foodEaten);
             // Get a reference to the PlayerController component
             PlayerController playerController = player.GetComponent<PlayerController>();
 
@@ -538,26 +516,43 @@ public class WaiterTasks : MonoBehaviour
     [Task]
     void CleanTable()
     {
+        
         // Find the GameObject with the "EmptyDish" tag
         GameObject emptyDish = GameObject.FindGameObjectWithTag("EmptyDish");
+        GameObject Dish = GameObject.FindGameObjectWithTag("Dish");
 
-        // Check if an empty dish is found
-        if (emptyDish != null)
+        if(Dish != null)
         {
-            // Set the empty dish's parent to the bot's hand transform
-            emptyDish.transform.SetParent(botHandTransform);
+            // Check if an empty dish is found
+            if (Dish != null)
+            {
+                // Set the empty dish's parent to the bot's hand transform
+                Dish.transform.SetParent(botHandTransform);
 
-            // Set the local position and rotation of the empty dish
-            emptyDish.transform.localPosition = botHandTransform.transform.localPosition;
+                // Set the local position and rotation of the empty dish
+                Dish.transform.localPosition = botHandTransform.transform.localPosition;
 
-            // Indicate that the table is now clean
-            Task.current.Succeed();
+                // Indicate that the table is now clean
+                Task.current.Succeed();
+            }
+            else if (emptyDish != null)
+            {
+                // Set the empty dish's parent to the bot's hand transform
+                emptyDish.transform.SetParent(botHandTransform);
+
+                // Set the local position and rotation of the empty dish
+                emptyDish.transform.localPosition = botHandTransform.transform.localPosition;
+
+                // Indicate that the table is now clean
+                Task.current.Succeed();
+            }
+            else
+            {
+                // If no dishes found, indicate that the task failed
+                Task.current.Fail();
+            }
         }
-        else
-        {
-            // If no empty dish is found, indicate that the task failed
-            Task.current.Fail();
-        }
+
     }
 
 
@@ -565,7 +560,22 @@ public class WaiterTasks : MonoBehaviour
     void PutDishInSink()
     {
         GameObject emptyDish = GameObject.FindGameObjectWithTag("EmptyDish");
-        Destroy(emptyDish);
+        GameObject Dish = GameObject.FindGameObjectWithTag("Dish");
+
+        if (Dish != null)
+        {
+            Destroy(Dish);
+            leaveRestaurant = false;
+            tableClean = true;
+            Task.current.Succeed();
+        }
+        else if(emptyDish != null)
+        {
+            Destroy(emptyDish);
+            leaveRestaurant = false;
+            tableClean = true;
+            Task.current.Succeed();
+        }
     }
 }
 

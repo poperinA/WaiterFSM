@@ -20,7 +20,7 @@ public class WaiterController : MonoBehaviour
             WaiterTasks.leaveRestaurant = true;
         }
 
-        if (WaiterTasks.foodEaten)
+        if (WaiterTasks.foodEaten && waiterTasks.Dish != null)
         {
             // Store the position of the current dish
 

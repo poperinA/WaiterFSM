@@ -88,7 +88,6 @@ tree("Cleaning")
         DetectCustomerLeave
         DisplayPlayer("")
         Display("Customer left. Cleaning table...")
-        MoveTo("EmptyDish")
         CleanTable
         MoveTo("Sink")
         PutDishInSink
