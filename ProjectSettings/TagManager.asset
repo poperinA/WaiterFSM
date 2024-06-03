@@ -13,6 +13,13 @@ TagManager:
   - Table4Seat
   - CustomerWaitingArea
   - IdleArea
+  - Collection
+  - DishPos3
+  - DishPos4
+  - RefillStation
+  - EmptyDish
+  - Dish
+  - Sink
   layers:
   - Default
   - TransparentFX

@@ -6,6 +6,7 @@ tree("Root")
         tree("OrderTaking")
         tree("ComplaintHandling")
         tree("Serving")
+        tree("Cleaning")
         tree("Idle")
 
 
@@ -40,7 +41,7 @@ tree("OrderTaking")
         DisplayPlayer("")
         Display("Great! We're preparing your order now.")
         Wait(100)
-        DisplayPlayer("1 - Service button, 2 - Drink refill")
+        DisplayPlayer("1 - Service button, 2 - Drink refill, 3 - Leave Restaurant")
 
 
 tree("ComplaintHandling")
@@ -80,6 +81,19 @@ tree("Refill")
         MoveTo("Customer")
         Display("Enjoy!")
         Wait(100)
+
+
+tree("Cleaning")
+	sequence
+        DetectCustomerLeave
+        DisplayPlayer("")
+        Display("Customer left. Cleaning table...")
+        MoveTo("EmptyDish")
+        CleanTable
+        MoveTo("Sink")
+        PutDishInSink
+        Wait(200)
+
 
 
 tree("Idle")
